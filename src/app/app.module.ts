@@ -6,11 +6,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { GestureControlComponent } from "../components/gesture-controls/gesture-control.component";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    GestureControlComponent
   ],
   imports: [
     BrowserModule,
