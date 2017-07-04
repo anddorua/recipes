@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController, LoadingController, PopoverController, AlertController} from 'ionic-angular';
 import {NewRecipePage} from "../new-recipe/new-recipe";
 import {RecipesService} from "../../services/recipes";
 import {Recipe} from "../../models/recipe";
 import {RecipePage} from "../recipe/recipe";
+import {StoragePopoverPage} from "../sl-storage-popover/storage-popover";
+import {AuthService} from "../../services/auth";
 
 @IonicPage()
 @Component({
@@ -14,7 +16,11 @@ export class RecipesPage {
 
   constructor(
     private navCtrl: NavController,
-    private recipesService: RecipesService
+    private recipesService: RecipesService,
+    private popCtrl: PopoverController,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private auth: AuthService
   ){}
 
   onNewRecipe() {
@@ -28,5 +34,57 @@ export class RecipesPage {
   onLoadRecipe(i: number) {
       this.navCtrl.push(RecipePage, this.recipesService.get()[i]);
   }
+
+  onShowPopover(event) {
+    const popover = this.popCtrl.create(StoragePopoverPage);
+    popover.present({ ev: event });
+    popover.onDidDismiss(data => {
+      if (!data) {
+        return;
+      }
+      if (data.action == 'load') {
+        const spinner = this.loadingCtrl.create({
+          content: 'Loading data ...'
+        });
+        spinner.present();
+        this.auth.getActiveUser().getToken()
+          .then((token: string) => {
+            this.recipesService.fetchRecipes(token)
+              .subscribe(
+                () => {
+                  spinner.dismiss();
+                },
+                error => {
+                  this.alertCtrl.create({
+                    title: 'Error',
+                    subTitle: error.json().error,
+                    buttons: ['Ok']
+                  }).present();
+                });
+          });
+      } else if (data.action == 'save') {
+        const spinner = this.loadingCtrl.create({
+          content: 'Saving data ...'
+        });
+        spinner.present();
+        this.auth.getActiveUser().getToken()
+          .then((token: string) => {
+            this.recipesService.storeRecipes(token)
+              .subscribe(
+                () => {
+                  spinner.dismiss();
+                },
+                error => {
+                  this.alertCtrl.create({
+                    title: 'Error',
+                    subTitle: error.json().error,
+                    buttons: ['Ok']
+                  }).present();
+                });
+          });
+      }
+    });
+  }
+
 
 }

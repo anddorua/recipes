@@ -1,9 +1,15 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-buttons end>
       <button ion-button icon-only (click)="onNewRecipe()">
         <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="onShowPopover($event)">
+        <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Recipes</ion-title>
@@ -20,28 +26,4 @@
     </button>
   </ion-list>
 
-<!--
-  <ion-card *ngFor="let recipe of getRecipes()">
-
-    <ion-card-header>
-      <h3>{{ recipe.title }}</h3>
-      <p>{{ recipe.difficulty }}</p>
-    </ion-card-header>
-
-    <ion-card-content>
-      <p>{{ recipe.description }}</p>
-    </ion-card-content>
-    <ion-list>
-      <ion-list-header>
-        Ingredients
-      </ion-list-header>
-      <ion-item *ngFor="let ingredient of recipe.ingredients">
-        {{ ingredient.name }}
-        <ion-note item-end>
-          {{ ingredient.amount }}
-        </ion-note>
-      </ion-item>
-    </ion-list>
-  </ion-card>
--->
 </ion-content>

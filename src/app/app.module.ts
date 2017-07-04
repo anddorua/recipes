@@ -12,10 +12,16 @@ import {NewRecipePageModule} from "../pages/new-recipe/new-recipe.module";
 import {RecipePageModule} from "../pages/recipe/recipe.module";
 import {ShoppingList} from "../services/shopping.list";
 import {RecipesService} from "../services/recipes";
+import {SignupPageModule} from "../pages/signup/signup.module";
+import {SigninPageModule} from "../pages/signin/signin.module";
+import {AuthService} from "../services/auth";
+import {StoragePopoverPage} from "../pages/sl-storage-popover/storage-popover";
+import {HttpModule} from "@angular/http";
 
 @NgModule({
   declarations: [
     MyApp,
+    StoragePopoverPage
   ],
   imports: [
     BrowserModule,
@@ -24,18 +30,23 @@ import {RecipesService} from "../services/recipes";
     RecipesPageModule,
     ShoppingListPageModule,
     NewRecipePageModule,
-    RecipePageModule
+    RecipePageModule,
+    SignupPageModule,
+    SigninPageModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    StoragePopoverPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ShoppingList,
-    RecipesService
+    RecipesService,
+    AuthService
   ]
 })
 export class AppModule {}
